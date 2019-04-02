@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Google.Cloud.TextToSpeech.V1;
 
 namespace TradutorCavales
 {
@@ -26,7 +28,7 @@ namespace TradutorCavales
         {
             var replace = replacingConsonants(txtPt.Text);
 
-            txtCavalo.Text = replace;
+            txtCavalo.Text = replace.Replace("gg","g");
         }
 
 
@@ -94,6 +96,43 @@ namespace TradutorCavales
             }
 
             return s;
+        }
+
+        private void FalaDoGoogle(object sender, EventArgs e)
+        {
+            TextToSpeechClient client = TextToSpeechClient.Create();
+
+            SynthesisInput input = new SynthesisInput
+            {
+                Text = txtCavalo.Text
+            };
+            VoiceSelectionParams voice = new VoiceSelectionParams
+            {
+                LanguageCode = "pt-BR",
+                SsmlGender = SsmlVoiceGender.Female
+            };
+
+            // Select the type of audio file you want returned.
+            AudioConfig config = new AudioConfig
+            {
+                AudioEncoding = AudioEncoding.Mp3
+            };
+
+            // Perform the Text-to-Speech request, passing the text input
+            // with the selected voice parameters and audio file type
+            var response = client.SynthesizeSpeech(new SynthesizeSpeechRequest
+            {
+                Input = input,
+                Voice = voice,
+                AudioConfig = config
+            });
+
+            // Write the binary AudioContent of the response to an MP3 file.
+            using (Stream output = File.Create("sample.mp3"))
+            {
+                response.AudioContent.WriteTo(output);
+                Console.WriteLine($"Audio content written to file 'sample.mp3'");
+            }
         }
 
     }
