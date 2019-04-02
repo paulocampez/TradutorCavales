@@ -28,7 +28,11 @@ namespace TradutorCavales
         {
             var replace = replacingConsonants(txtPt.Text);
 
+            Random rnd = new Random();
+            
             txtCavalo.Text = replace.Replace("gg","g");
+            if(rnd.Next(1, 3) == 1)
+                txtCavalo.Text += " CHÁDUDUDU";
         }
 
         private void button2_Click(object sender, EventArgs e)
