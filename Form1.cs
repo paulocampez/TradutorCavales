@@ -60,7 +60,8 @@ namespace TradutorCavales
                     {
                         continue;
                     }
-                    else if (s[i] == 't')
+                    
+                    else if (s[i] == 't' || s[i] == 'n')
                     {
                         continue;
                     }
