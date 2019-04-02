@@ -31,7 +31,11 @@ namespace TradutorCavales
             txtCavalo.Text = replace.Replace("gg","g");
         }
 
+        private void button2_Click(object sender, EventArgs e)
+        {
 
+        }
+        
         static bool isVowel(char ch)
         {
             if (ch != 'a' && ch != 'e' && ch != 'i'
